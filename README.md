@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # aws-cost-estimator
 
 ## Concepts
@@ -46,6 +45,3 @@ Scalars can be multiplied regardless of their vector or manifold, producing a sc
 scalars are multiplied, the resulting scalar has a vector which is the union of the operands' vectors, and the resulting scalar's
 manifold is the product of of the operands' manifolds. Manifolds are multiplied by adding the integer values for corresponding dimensions
 (note that missing dimensions implicitly have an exponent of 0).
-=======
-# \$PROJECT_NAME
->>>>>>> c662a008e34d074c00a6ec9ba1b73aa3f22938cf
