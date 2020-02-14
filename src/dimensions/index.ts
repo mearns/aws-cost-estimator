@@ -1,6 +1,6 @@
 export type Unit = string | symbol;
 
-export type Dimension = (value: number, from: Unit, to: Unit) => number;
+export type Dimension = (value: number, from: Unit, to?: Unit) => number;
 
 export type BasePerUnitRatio = number;
 
@@ -12,7 +12,8 @@ export type UnitToUnitConverter =
   | BasePerUnitRatio;
 
 export interface DimensionWithUnits extends Dimension {
-  units: { [unitName: string]: symbol };
+  readonly dim: Dimension;
+  readonly units: { [unitName: string]: symbol };
 }
 
 export function defineDimension(
@@ -64,7 +65,11 @@ export function defineDimension(
   }
 
   const dim: Dimension = {
-    [dimensionName]: (value: number, from: Unit, to: Unit): number => {
+    [dimensionName]: (
+      value: number,
+      from: Unit,
+      to: Unit = baseUnitSymbol
+    ): number => {
       const fromSymbol: symbol = typeof from === "symbol" ? from : units[from];
       const toBaseUnits = toBaseConverters.get(fromSymbol);
       if (!toBaseUnits) {
@@ -85,5 +90,5 @@ export function defineDimension(
     }
   }[dimensionName];
 
-  return Object.assign(dim, { units });
+  return Object.assign(dim, { dim, units });
 }

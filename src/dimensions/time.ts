@@ -46,7 +46,9 @@ interface TimeUnits {
   years: Unit;
 }
 
-interface TimeDimension extends Dimension, TimeUnits {}
+interface TimeDimension extends Dimension, TimeUnits {
+  readonly dim: Dimension;
+}
 
 const time: TimeDimension = Object.assign(
   _time,
