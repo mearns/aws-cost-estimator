@@ -15,7 +15,8 @@ export function manifold(
   const m: Manifold = Object.assign(
     (dim: dimensions.Dimension): DimExponent => map.get(dim) || 0,
     {
-      [Symbol.iterator]: () => map.keys()[Symbol.iterator]()
+      [Symbol.iterator]: () => map.keys()[Symbol.iterator](),
+      toString: (): string => [...map.entries()].map(String).join(", ")
     }
   );
   return m;
@@ -25,7 +26,10 @@ export function multiply(a: Manifold, b: Manifold): Manifold {
   const product: [dimensions.Dimension, DimExponent][] = [];
   const allDims: Set<dimensions.Dimension> = new Set([...a, ...b]);
   for (const dim of allDims) {
-    product.push([dim, (a(dim) || 0) + (b(dim) || 0)]);
+    const degree = (a(dim) || 0) + (b(dim) || 0);
+    if (degree) {
+      product.push([dim, degree]);
+    }
   }
   return manifold(product);
 }

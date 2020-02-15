@@ -75,5 +75,5 @@ export function add(a: Scalar, b: Scalar): Scalar {
   if (shears.equal(aShear, bShear)) {
     return scalar(value(a) + value(b), aShear);
   }
-  throw new TypeError("Manifolds are not convertible");
+  throw new TypeError("Scalars have incongruent shears and cannot be added.");
 }

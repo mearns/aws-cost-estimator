@@ -83,5 +83,9 @@ export function dimension(
     }
   }[dimensionName];
 
-  return Object.assign(dim, { dim, units });
+  return Object.assign(dim, {
+    dim,
+    units,
+    toString: (): string => dimensionName
+  });
 }
