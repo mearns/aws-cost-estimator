@@ -1,6 +1,6 @@
-import { DimensionWithUnits, defineDimension, Dimension, Unit } from ".";
+import { DimensionWithUnits, dimension, Dimension, Unit } from ".";
 
-const _time: DimensionWithUnits = defineDimension("time", "seconds", {
+const _time: DimensionWithUnits = dimension("time", "seconds", {
   microseconds: 1e-6,
   milliseconds: 1e-3,
   minutes: 60,
@@ -11,7 +11,7 @@ const _time: DimensionWithUnits = defineDimension("time", "seconds", {
   years: 365.25 * 24 * 60 * 60
 });
 
-const units: { [unitName: string]: symbol } = { ..._time.units };
+const units: { [unitName: string]: Unit } = { ..._time.units };
 units.ms = _time.units.milliseconds;
 units.us = _time.units.microseconds;
 units.μs = _time.units.microseconds;

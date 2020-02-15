@@ -1,12 +1,12 @@
-import { DimensionWithUnits, defineDimension, Dimension, Unit } from ".";
+import { DimensionWithUnits, dimension, Dimension, Unit } from ".";
 
-const _mass: DimensionWithUnits = defineDimension("mass", "kilograms", {
+const _mass: DimensionWithUnits = dimension("mass", "kilograms", {
   milligrams: 1e-6,
   grams: 1e-3,
   megagrams: 1e6
 });
 
-const units: { [unitName: string]: symbol } = { ..._mass.units };
+const units: { [unitName: string]: Unit } = { ..._mass.units };
 units.mg = units.milligrams;
 units.g = units.grams;
 units.kg = units.kilograms;

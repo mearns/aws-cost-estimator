@@ -16,18 +16,27 @@ in time would be different currencies for the _cost_ dimension.
 
 The dimension is responsible of converting values between any of its units.
 
-A **manifold** is a map from dimensions to integers, where the integers define the exponent of that dimension. E.g., a Newton
+A **vector** is a map from dimensions to collections of units in that dimension.
+
+A **manifold** is a map from dimensions to integers, where the integers define the _degree_ of that dimension. E.g., a Newton
 is defined as kilogram meters per second per second, so this would have a manifold of `{ mass: 1, distance: 1, time: -2 }`.
 Note that manifolds don't specific units, so a Newton would not _be_ a manifold, it would _have_ an implicit manifold
-indicated by it's units.
+indicated by it's units. Instead, a Newton would be a shear.
 
-A **scalar** is the two tuple of a number and a manifold. For instance, 4 Newtons would be `(4, { mass: 1, distance: 1, time: -2 })`,
-assuming the base unit of _mass_ is a kilogram, the base unit of _distance_ is a meter, and the base unit of _time_ is seconds. This
-evalutes as `4 kg * m / s / s`;
+A **shear** is the pairing of a vector and a manifold. A shear is only valid if cardinality of each set of units in the vector
+is equal to the magnitude of the degree of the corresponding dimensions in the manifold. For instance, a Newton would be a shear
+in the force manifold, defined by:
+`( { mass: [kilograms], distance: [meters], time: [ seconds, seconds ] }, { mass: 1, distance: 1, time: -2 } )`
 
-Scalars can be added if and only if they have the same manifold.
+Shears are **similar** if and only if they have the same manifold. Shear's are **equal** if and only if they have the same
+vector and manifold.
 
-Scalars can be multiplied regardless of their manifold, producing a scalar with a new number and new manifold. When
-scalars are multiplied, the resulting scalar has a number which is the product of the operands' numbers, and the resulting scalar's
+A **scalar** is the two tuple of a number and a shear.
+
+Scalars can be added if and only if they have the same shear. Scalars can be **scaled** to a different, _similar_ shear by multiplying
+the value of the scalar by a factor which scales the units from the one shear to the other.
+
+Scalars can be multiplied regardless of their shear, even in different manifolds, producing a scalar with a new number and new shear (in
+a new manifold). When scalars are multiplied, the resulting scalar has a number which is the product of the operands' numbers, and the resulting scalar's
 manifold is the product of of the operands' manifolds. Manifolds are multiplied by adding the integer values for corresponding dimensions
 (note that missing dimensions implicitly have an exponent of 0).

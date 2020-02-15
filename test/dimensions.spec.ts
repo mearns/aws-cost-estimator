@@ -14,7 +14,7 @@ import { expect } from "chai";
 describe("dimensions", () => {
   describe("defineDimension", () => {
     it("a simple time dimension", () => {
-      const time = dimensions.defineDimension("time", "seconds", {
+      const time = dimensions.dimension("time", "seconds", {
         milliseconds: 0.001,
         minutes: 60,
         hours: 60 * 60,

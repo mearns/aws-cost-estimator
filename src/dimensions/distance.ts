@@ -1,6 +1,6 @@
-import { DimensionWithUnits, defineDimension, Dimension, Unit } from ".";
+import { DimensionWithUnits, dimension, Dimension, Unit } from ".";
 
-const _distance: DimensionWithUnits = defineDimension("distance", "meters", {
+const _distance: DimensionWithUnits = dimension("distance", "meters", {
   micrometers: 1e-6,
   millimeters: 1e-3,
   centimeters: 1e-2,
@@ -17,7 +17,7 @@ const _distance: DimensionWithUnits = defineDimension("distance", "meters", {
   smoots: 1.7018
 });
 
-const units: { [unitName: string]: symbol } = { ..._distance.units };
+const units: { [unitName: string]: Unit } = { ..._distance.units };
 units.um = units.micrometers;
 units.μm = units.micrometers;
 units.mm = units.millimeters;

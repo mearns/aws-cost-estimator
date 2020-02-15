@@ -13,10 +13,10 @@ export type UnitToUnitConverter =
 
 export interface DimensionWithUnits extends Dimension {
   readonly dim: Dimension;
-  readonly units: { [unitName: string]: symbol };
+  readonly units: { [unitName: string]: Unit };
 }
 
-export function defineDimension(
+export function dimension(
   dimensionName: string,
   baseUnitName: string,
   unitMappings: {
@@ -29,38 +29,33 @@ export function defineDimension(
     );
   }
 
-  const baseUnitSymbol = Symbol(`${baseUnitName} [${dimensionName}]`);
-  const units: { [unitName: string]: symbol } = {
-    [baseUnitName]: baseUnitSymbol
+  const units: { [unitName: string]: string } = {
+    [baseUnitName]: baseUnitName
   };
 
   const fromBaseConverters: Map<
-    symbol,
+    Unit,
     (baseUnits: number) => number
   > = new Map();
-  const toBaseConverters: Map<
-    symbol,
-    (baseUnits: number) => number
-  > = new Map();
+  const toBaseConverters: Map<Unit, (baseUnits: number) => number> = new Map();
 
-  fromBaseConverters.set(baseUnitSymbol, (u: number): number => u);
-  toBaseConverters.set(baseUnitSymbol, (u: number): number => u);
+  fromBaseConverters.set(baseUnitName, (u: number): number => u);
+  toBaseConverters.set(baseUnitName, (u: number): number => u);
 
   for (const [unitName, converter] of Object.entries(unitMappings)) {
-    const sym = Symbol(`${unitName} [${dimensionName}]`);
-    units[unitName] = sym;
+    units[unitName] = unitName;
     if (typeof converter === "number") {
       toBaseConverters.set(
-        sym,
+        unitName,
         (otherUnits: number): number => otherUnits * converter
       );
       fromBaseConverters.set(
-        sym,
+        unitName,
         (baseUnits: number): number => baseUnits / converter
       );
     } else {
-      toBaseConverters.set(sym, converter.toBase);
-      fromBaseConverters.set(sym, converter.fromBase);
+      toBaseConverters.set(unitName, converter.toBase);
+      fromBaseConverters.set(unitName, converter.fromBase);
     }
   }
 
@@ -68,18 +63,16 @@ export function defineDimension(
     [dimensionName]: (
       value: number,
       from: Unit,
-      to: Unit = baseUnitSymbol
+      to: Unit = baseUnitName
     ): number => {
-      const fromSymbol: symbol = typeof from === "symbol" ? from : units[from];
-      const toBaseUnits = toBaseConverters.get(fromSymbol);
+      const toBaseUnits = toBaseConverters.get(from);
       if (!toBaseUnits) {
         throw new Error(
           `Unknown unit ${String(from)} for dimension ${dimensionName}`
         );
       }
 
-      const toSymbol: symbol = typeof to === "symbol" ? to : units[to];
-      const fromBaseUnits = fromBaseConverters.get(toSymbol);
+      const fromBaseUnits = fromBaseConverters.get(to);
       if (!fromBaseUnits) {
         throw new Error(
           `Unknown unit ${String(to)} for dimension ${dimensionName}`
